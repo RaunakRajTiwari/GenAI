@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Mental Health Chatbot for Students</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Navbar styling */
+        .c {
+            color: yellow;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 10;
+        }
+
+        .nav-links {
+            list-style-type: none;
+            display: flex;
+            justify-content: center; /* Center main links */
+            margin: 0 auto;
+            padding: 0;
+            margin-right: auto; /* Push auth links to the right */
+        }
+
+        .nav-links li {
+            margin-left: 20px;
+        }
+
+        .nav-auth {
+            list-style-type: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+            margin-left: auto; /* Push login/signup more to the right */
+        }
+
+        .nav-auth li {
+            margin-left: 20px;
+        }
+
+        .nav-links li a, .nav-auth li a {
+            display: block;
+            padding: 8px 16px;
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-links li a:hover, .nav-auth li a:hover {
+            background-color: white;
+            color: black;
+        }
+
+        .navbar h2 {
+            color: white;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+            margin: 0; /* Remove any margin */
+        }
+
+        /* Parallax effect for the hero section */
+        .hero-section {
+            background: url('Network.jpg') no-repeat center center;
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            background-attachment: fixed;
+        }
+
+        /* Overlay to darken background image */
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: -1;
+        }
+
+        /* Main title and subtitle styling */
+        .hero-section h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        /* Static paragraph */
+        .hero-section p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        /* Call-to-action button styling */
+        .cta-btn {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            color: #fff;
+            background-color: #ff6347;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .cta-btn:hover {
+            background-color: #ff4500;
+        }
+
+        /* Features section below hero section */
+        .features-section {
+            padding: 50px;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
+
+        .features-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .features-section p {
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        /* Responsive styling */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 10px;
+            }
+
+            .navbar ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .navbar ul li {
+                margin: 10px 0;
+            }
+
+            .hero-section h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-section p {
+                font-size: 1.2rem;
+                width: 90%;
+                white-space: normal; /* Allow text to wrap */
+            }
+
+            .cta-btn {
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
+
+            .features-section {
+                padding: 30px;
+            }
+
+            .features-section h2 {
+                font-size: 2rem;
+            }
+
+            .features-section p {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar ul li {
+                margin: 5px 0;
+            }
+
+            .hero-section h1 {
+                font-size: 2rem;
+            }
+
+            .hero-section p {
+                font-size: 1rem;
+            }
+
+            .cta-btn {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar Section -->
+    <nav class="navbar">
+        <h2>MindCare Chatbot</h2>
+        
+        <!-- Main Navigation Links -->
+        <ul class="nav-links">
+            <li><a href="#chat">Chat</a></li>
+            <li><a href="#explore">Explore</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="https://forms.gle/MYF5osHM35YFzs1q9">Feedback</a></li>
+        </ul>
+    
+        <!-- Login and Signup Links -->
+        <ul class="nav-auth">
+            <li><a href="Login.html">Login</a></li>
+            <li><a href="Signup.html">Signup</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section with Parallax Effect -->
+    <section class="hero-section" id="home">
+        <h1>Mental Health Support for Students</h1>
+        <p>Your <span class="c">Personalized Coach!!</span></p>
+        <a href="#get-started" class="cta-btn">Start Chatting Now</a>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section" id="get-started">
+        <h2>Why Choose Us?</h2>
+        <p>Our AI-powered chatbot provides real-time emotional support, guided conversations, and stress-relief exercises to help you navigate your academic journey.</p>
+        <p>Feel free to reach out anytime and get instant assistance tailored to your needs.</p>
+    </section>
+    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+    <script>
+        var typed = new Typed('.c', {
+            strings: ["Friend!!", "Buddy!!", "Companion!!"],
+            typeSpeed: 150,
+            backSpeed: 150,
+            loop: true,
+            showCursor: true, // Ensure the cursor is visible
+            smartBackspace: true // Only delete differing strings
+        });
+    </script>
+
+</body>
+</html>
