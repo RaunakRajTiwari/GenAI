@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sign Up Page</title>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js" type="module"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js" type="module"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+            overflow-x: hidden;
+            background: url('Network.jpg') no-repeat center center fixed; /* Same background image */
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Dark overlay for better contrast with form */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6); /* Semi-transparent overlay */
+            z-index: 1;
+        }
+
+        /* Navbar styling (same as login page) */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 10;
+        }
+
+        .navbar ul {
+            list-style-type: none;
+            display: flex;
+            margin: 0 auto; /* Center the list */
+            padding: 0;
+        }
+
+        .navbar ul li {
+            margin-left: 20px;
+        }
+
+        .navbar ul li a {
+            display: block;
+            padding: 8px 16px;
+            color: white; /* Default text color */
+            text-decoration: none;
+            font-size: 1.2rem;
+            border-radius: 10px; /* Round corners for links */
+            transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effect */
+            background-color: rgba(255, 255, 255, 0.2); /* Default background color for links */
+        }
+
+        .navbar ul li a:hover {
+            background-color: white; /* Background on hover */
+            color: black; /* Change text color to black on hover */
+        }
+
+        .navbar-right {
+            margin-left: auto; /* Push login/signup to the right */
+            display: flex;
+        }
+
+        .navbar h2 {
+            color: white;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        .signup-container h2 {
+            color: yellow; /* Heading color */
+        }
+
+        /* Signup form styling */
+        .signup-container {
+            position: relative;
+            z-index: 2;
+            background-color: rgba(255, 255, 255, 0.2); /* Light gray with more transparency */
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+            color: white;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        input[type="email"], input[type="text"], input[type="password"], input[type="tel"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .signup-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .signup-btn:hover {
+            background-color: #45a049;
+        }
+
+        .signup-container p {
+            margin-top: 10px;
+            font-size: 14px;
+            color: yellow; /* Text color for the paragraph */
+        }
+
+        .signup-container a {
+            color:white;
+            text-decoration: none;
+        }
+
+        .signup-container a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive styling */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 10px;
+            }
+
+            .navbar ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .navbar ul li {
+                margin: 10px 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar ul li {
+                margin: 5px 0;
+            }
+
+            .signup-container {
+                width: 90%;
+                padding: 20px;
+            }
+        }
+    </style>
+    <!-- Include Appwrite SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@15.0.0"></script>
+</head>
+<body>
+
+    <!-- Navbar Section -->
+    <nav class="navbar">
+        <h2>MindCare Chatbot</h2>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#explore">Explore</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="https://forms.gle/MYF5osHM35YFzs1q9">Feedback</a></li>
+        </ul>
+        <div class="navbar-right">
+            <ul>
+                <li><a href="Login.html">Login</a></li>
+                <li><a href="SignUp.html">Signup</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Signup Form Section -->
+    <div class="signup-container">
+        <h2>Sign Up</h2>
+        <form id="signup-form">
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="tel" id="phone" placeholder="Phone Number" required>
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Create Password" required>
+            <input type="password" id="confirm_password" placeholder="Confirm Password" required>
+            <button type="submit" class="signup-btn">Sign Up</button>
+        </form>
+        <p id="message" style="color: yellow;"></p> <!-- Message display -->
+        <p>Already have an account? <a href="Login.html">Login</a></p>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+        const firebaseConfig = {
+            apiKey: "AIzaSyBO1ygADhqJ92vNBGPAVMmshHHTlQZFIPQ",
+            authDomain: "mindcare-auth.firebaseapp.com",
+            projectId: "mindcare-auth",
+            storageBucket: "mindcare-auth.appspot.com",
+            messagingSenderId: "208419785378",
+            appId: "1:208419785378:web:6356c683d09e9c360ca5fb",
+            measurementId: "G-N832KG9JHG"
+          };
+          
+          // Initialize Firebase
+          const app = initializeApp(firebaseConfig);
+          const auth = getAuth(app);
+          
+        document.getElementById('signup-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+
+            if (password !== confirmPassword) {
+                document.getElementById('message').textContent = "Passwords do not match!";
+                return;
+            }
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                document.getElementById('message').textContent = "Sign Up Successful!";
+                window.location.href = 'index.html'; // Redirect after successful signup
+            } catch (error) {
+                document.getElementById('message').textContent = error.message;
+            }
+        });
+    </script>
+</body>
+</html>
